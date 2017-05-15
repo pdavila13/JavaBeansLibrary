@@ -15,39 +15,33 @@ import java.util.Date;
  */
 public class PrimerBean implements Serializable {
     
-    public static final String PROP_SAMPLE_PROPERTY = "sampleProperty";
+    public static final String PROP_STOCK_ACTUAL = "stock_actual";
+    public static final String PROP_STOCK_MINIM = "stock_minim";
+    public static final String PROP_PREU_VENTA_PUBLIC = "pvp";
     
     private String sampleProperty;
     
     private String num_serie;
     private String denominacio;
     private String fabricant;
-    private int stock_actual;
-    private int stock_minim;
+    private int stock_actual = 10;
+    private int stock_minim = 1;
     private float preu_cost;
     private float pvp;
     private int any_fabricacio;
     private String[] caracteristiques_tecniques;
-    private String Categoria;
+    private String categoria;
     private String ubicacio;
     private Date data_alta;
     
     private PropertyChangeSupport propertySupport;
+    private VetoableChangeSupport vetoableSupport;
     
     public PrimerBean() {
         propertySupport = new PropertyChangeSupport(this);
-    }
+        vetoableSupport = new VetoableChangeSupport(this);
+    }    
     
-    public String getSampleProperty() {
-        return sampleProperty;
-    }
-    
-    public void setSampleProperty(String value) {
-        String oldValue = sampleProperty;
-        sampleProperty = value;
-        propertySupport.firePropertyChange(PROP_SAMPLE_PROPERTY, oldValue, sampleProperty);
-    }
-
     public String getNum_serie() {
         return num_serie;
     }
@@ -76,7 +70,12 @@ public class PrimerBean implements Serializable {
         return stock_actual;
     }
 
-    public void setStock_actual(int stock_actual) {
+    public void setStock_actual(int stock_actual) throws PropertyVetoException {
+        int oldValue = this.stock_actual;
+        
+        propertySupport.firePropertyChange(PROP_STOCK_ACTUAL, oldValue, stock_actual);
+        vetoableSupport.fireVetoableChange(PROP_STOCK_ACTUAL, this.stock_actual, stock_actual);
+        
         this.stock_actual = stock_actual;
     }
 
@@ -84,7 +83,12 @@ public class PrimerBean implements Serializable {
         return stock_minim;
     }
 
-    public void setStock_minim(int stock_minim) {
+    public void setStock_minim(int stock_minim) throws PropertyVetoException {
+        int oldValue = this.stock_minim;
+        
+        propertySupport.firePropertyChange(PROP_STOCK_MINIM, oldValue, stock_minim);
+        vetoableSupport.fireVetoableChange(PROP_STOCK_MINIM, this.stock_minim, stock_minim);
+                
         this.stock_minim = stock_minim;
     }
 
@@ -100,7 +104,12 @@ public class PrimerBean implements Serializable {
         return pvp;
     }
 
-    public void setPvp(float pvp) {
+    public void setPvp(float pvp) throws PropertyVetoException {
+        float oldValue = this.pvp;
+        
+        propertySupport.firePropertyChange(PROP_PREU_VENTA_PUBLIC, oldValue, pvp);
+        vetoableSupport.fireVetoableChange(PROP_PREU_VENTA_PUBLIC, this.pvp, pvp);
+                
         this.pvp = pvp;
     }
 
@@ -127,13 +136,13 @@ public class PrimerBean implements Serializable {
     public void setCaracteristiques_tecniques(int index, String valor) {
         this.caracteristiques_tecniques[index] = valor;
     }
-
+    
     public String getCategoria() {
-        return Categoria;
+        return categoria;
     }
 
-    public void setCategoria(String Categoria) {
-        this.Categoria = Categoria;
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
     }
 
     public String getUbicacio() {
@@ -160,4 +169,11 @@ public class PrimerBean implements Serializable {
         propertySupport.removePropertyChangeListener(listener);
     }
     
+    public void addVetoableChangeListener(VetoableChangeListener listener) {
+        vetoableSupport.addVetoableChangeListener(listener);
+    }
+    
+    public void removeVetoableChangeListener(VetoableChangeListener listener) {
+        vetoableSupport.removeVetoableChangeListener(listener);
+    }
 }
