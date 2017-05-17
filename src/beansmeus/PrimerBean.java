@@ -18,8 +18,7 @@ public class PrimerBean implements Serializable {
     public static final String PROP_STOCK_ACTUAL = "stock_actual";
     public static final String PROP_STOCK_MINIM = "stock_minim";
     public static final String PROP_PREU_VENTA_PUBLIC = "pvp";
-    
-    private String sampleProperty;
+    public static final String PROP_ANY_FABRICACIO = "any_fabricacio";
     
     private String num_serie;
     private String denominacio;
@@ -28,8 +27,8 @@ public class PrimerBean implements Serializable {
     private int stock_minim = 1;
     private float preu_cost;
     private float pvp;
-    private int any_fabricacio;
-    private String[] caracteristiques_tecniques;
+    private int any_fabricacio = 0;
+    private String[] caracteristiques_tecniques = {};
     private String categoria;
     private String ubicacio;
     private Date data_alta;
@@ -117,7 +116,12 @@ public class PrimerBean implements Serializable {
         return any_fabricacio;
     }
 
-    public void setAny_fabricacio(int any_fabricacio) {
+    public void setAny_fabricacio(int any_fabricacio) throws PropertyVetoException {
+        int oldValue = this.any_fabricacio;
+        
+        propertySupport.firePropertyChange(PROP_ANY_FABRICACIO, oldValue, any_fabricacio);
+        vetoableSupport.fireVetoableChange(PROP_ANY_FABRICACIO, this.any_fabricacio, any_fabricacio);
+        
         this.any_fabricacio = any_fabricacio;
     }
 

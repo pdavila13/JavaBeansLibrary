@@ -8,12 +8,16 @@ package beansmeus;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
+import java.util.Calendar;
 
 /**
  *
  * @author pdavila
  */
 public class ReceptorVetador implements VetoableChangeListener {
+    
+    int year = Calendar.getInstance().get(Calendar.YEAR);
+    
     @Override
     public void vetoableChange(PropertyChangeEvent evt) throws PropertyVetoException {
         
@@ -62,6 +66,25 @@ public class ReceptorVetador implements VetoableChangeListener {
                 System.out.println("Valor anterior: " + evt.getOldValue());
                 System.out.println("Valor actual: " + evt.getNewValue()); 
             } 
+        }
+        
+        /**
+         * Avisar si l'any de fabricació és inferior a fa 5 anys o superior a l'actual.
+         */
+        if (evt.getPropertyName().equals("any_fabricacio")) {
+            if ((int) evt.getNewValue() <= (year - 5)) {
+                System.out.println("ALERTA: El any de fabricació es inferior a fa 5 anys!!! \n");
+                System.out.println("Canvi a la propietat " + evt.getPropertyName());
+                System.out.println("Valor anterior: " + evt.getOldValue());
+                System.out.println("Valor actual: " + evt.getNewValue()); 
+            }
+            
+            if ((int) evt.getNewValue() > year) {
+                System.out.println("ALERTA: El any de fabricació es superior a l'acual!!! \n");
+                System.out.println("Canvi a la propietat " + evt.getPropertyName());
+                System.out.println("Valor anterior: " + evt.getOldValue());
+                System.out.println("Valor actual: " + evt.getNewValue());
+            }
         }
     }
 }

@@ -13,7 +13,9 @@ import java.beans.PropertyChangeListener;
  * @author pdavila
  */
 public class Receptor implements PropertyChangeListener {
-    public void propertyChange(PropertyChangeEvent evt){
+    
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
         System.out.println("Canvi a la propietat " + evt.getPropertyName());
         System.out.println("Valor anterior: " + evt.getOldValue());
         System.out.println("Valor actual: " + evt.getNewValue());
